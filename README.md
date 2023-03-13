@@ -65,4 +65,4 @@ Rajouter une nouvelle page pour ce site, accessible seulement à un rôle `RoleE
 Elle doit être accessible à l'adresse suivante : 
 [http://localhost:8080/auth/superadmin]()
 
-Attention, il faut aussi déclarer la vue WebMvcConfig
+Attention, il faut aussi déclarer la vue dans la classe `WebMvcConfig`
