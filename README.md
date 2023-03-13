@@ -5,9 +5,9 @@ Dans cet atelier, nous allons voir les bases de l'authentification / autorisatio
 ## 1. Création de la base de données
 Créer la base de données suivante pour l'atelier : 
 
-nom : spring_security_demo
-username : springsercurityadmin
-password : WCS$@2023
+* nom base : spring_security_demo
+* username : springsercurityadmin
+* password : WCS$@2023
 
 Comme vous pouvez le voir dans [src/main/java/com/wildcodeschool/spring/security/persistence/entities]()
 
