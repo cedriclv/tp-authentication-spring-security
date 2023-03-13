@@ -1,6 +1,5 @@
 package com.wildcodeschool.spring.security.security_configuration;
 
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.Bean;
@@ -24,45 +23,47 @@ import jakarta.servlet.http.HttpServletResponse;
 public class WebSecurityConfig {
 
 	private final String adminRole = RoleEnum.ADMINISTRATOR.name();
-	
-    private static Logger logger = LoggerFactory.getLogger(WebMvcConfig.class);
+
+	private static Logger logger = LoggerFactory.getLogger(WebMvcConfig.class);
 	public static PasswordEncoder passwordEncoder = PasswordEncoderFactories.createDelegatingPasswordEncoder();
 
 	@Bean
-	public PasswordEncoder passwordEncoder() { 
+	public PasswordEncoder passwordEncoder() {
 		return passwordEncoder;
 	}
 
 	@Bean
 	public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-        logger.info("Initializing SecurityFilterChain");
-
+		logger.info("Initializing SecurityFilterChain");
 
 		// 4. Configuration des autorisations de route
 		http
-			.authorizeHttpRequests()
+				.authorizeHttpRequests()
+				.requestMatchers("/auth/admin").hasAuthority(RoleEnum.ADMINISTRATOR.name())
+				.requestMatchers("/auth**").authenticated()
 				.anyRequest().permitAll()
-			.and()
+				.and()
 				.exceptionHandling()
 				.accessDeniedPage("/errorAccessUnAuthorised")
-			.and()
+				.and()
 				.formLogin()
-					.loginPage("/login")
-					.defaultSuccessUrl("/auth")
-					.failureHandler((HttpServletRequest request, HttpServletResponse response, AuthenticationException exception) -> {
-						System.out.println("error during auth");
-						exception.printStackTrace();
-						response.sendRedirect("/error?error=" + exception.getMessage());
-					})
-					.usernameParameter("username")
-					.passwordParameter("password")
-			.and()
+				.loginPage("/login")
+				.defaultSuccessUrl("/auth")
+				.failureHandler((HttpServletRequest request, HttpServletResponse response,
+						AuthenticationException exception) -> {
+					System.out.println("error during auth");
+					exception.printStackTrace();
+					response.sendRedirect("/error?error=" + exception.getMessage());
+				})
+				.usernameParameter("username")
+				.passwordParameter("password")
+				.and()
 				.logout().invalidateHttpSession(true)
 				.logoutUrl("/logout")
 				.logoutSuccessUrl("/login")
-			.and()
+				.and()
 				.csrf()
-			.and()
+				.and()
 				.sessionManagement().maximumSessions(1)
 				.expiredUrl("/login");
 
